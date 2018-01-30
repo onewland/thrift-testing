@@ -1,0 +1,17 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    amq-protocol (2.2.0)
+    bunny (2.7.0)
+      amq-protocol (>= 2.2.0)
+    thrift (0.11.0.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  bunny
+  thrift
+
+BUNDLED WITH
+   1.15.3
