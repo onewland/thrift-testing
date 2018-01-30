@@ -1,22 +1,27 @@
 package com.crowdflower;
 
-import org.apache.thrift.TException;
-import org.apache.thrift.protocol.TBinaryProtocol;
-import org.apache.thrift.transport.TMemoryBuffer;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
+import static java.lang.Thread.sleep;
 
 public class TestbedForThrift {
-    public static void main(String[] args) throws TException {
-        IntAndString ias = new IntAndString("abc", 1);
-        System.out.println(ias);
+    public static final String RABBIT_MQ_URL = "amqp://guest:guest@localhost:5672";
 
-        TMemoryBuffer tMemoryBuffer = new TMemoryBuffer(1024);
-        TBinaryProtocol tbp = new TBinaryProtocol(tMemoryBuffer);
+    public static void main(String[] args) throws Exception {
+        ExecutorService executorService = Executors.newFixedThreadPool(4);
+        MQProducer mqProducer = new MQProducer(RABBIT_MQ_URL);
+        MQConsumer mqConsumer = new MQConsumer(RABBIT_MQ_URL, mqProducer.getQueue());
+        MQConsumer mqConsumer2 = new MQConsumer(RABBIT_MQ_URL, mqProducer.getQueue());
 
-        ias.write(tbp);
-        System.out.println(tMemoryBuffer.inspect());
+        executorService.submit(mqProducer);
+        executorService.submit(mqConsumer);
+        executorService.submit(mqConsumer2);
 
-        IntAndString ias2 = new IntAndString();
-        ias2.read(tbp);
-        System.out.println(ias2);
+        executorService.awaitTermination(5, TimeUnit.MINUTES);
+
+        mqProducer.shutdown();
+        mqConsumer.shutdown();
     }
 }
