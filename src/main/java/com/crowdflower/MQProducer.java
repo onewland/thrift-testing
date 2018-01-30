@@ -2,12 +2,12 @@ package com.crowdflower;
 
 import com.github.javafaker.Faker;
 import com.rabbitmq.client.AMQP;
-import com.rabbitmq.client.ConnectionFactory;
-import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
-import org.apache.thrift.transport.TMemoryBuffer;
+import org.apache.thrift.transport.AutoExpandingBufferWriteTransport;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -19,7 +19,9 @@ public class MQProducer implements Runnable {
     private final Connection connection;
     private final Channel channel;
     private final AMQP.Queue.DeclareOk mq;
-    private Faker faker;
+    private final Faker faker;
+    private AutoExpandingBufferWriteTransport tMemoryBuffer;
+    private TBinaryProtocol tbp;
 
     MQProducer(String url) throws NoSuchAlgorithmException,
             KeyManagementException,
@@ -32,6 +34,8 @@ public class MQProducer implements Runnable {
         connection = connectionFactory.newConnection();
         channel = connection.createChannel();
         mq = channel.queueDeclare("abcdefghi", false, false, true, null);
+        tMemoryBuffer = new AutoExpandingBufferWriteTransport(256, 2);
+        faker = Faker.instance();
     }
 
     public String getQueue() {
@@ -43,17 +47,20 @@ public class MQProducer implements Runnable {
         try {
             System.out.println("Publishing on " + mq.getQueue());
 
-            for(int i = 0; i < 1000; i++) {
-                faker = Faker.instance();
+            for(int i = 0; i < 100; i++) {
                 IntAndString ias = new IntAndString(faker.name().fullName(), i);
-                TMemoryBuffer tMemoryBuffer = new TMemoryBuffer(1024);
-                TBinaryProtocol tbp = new TBinaryProtocol(tMemoryBuffer);
+                tbp = new TBinaryProtocol(tMemoryBuffer);
                 ias.write(tbp);
-                channel.basicPublish("", mq.getQueue(), null, tMemoryBuffer.getArray());
+                channel.basicPublish("", mq.getQueue(), null, tMemoryBuffer.getBuf().array());
+                tMemoryBuffer.reset();
             }
+
+            shutdown();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (TException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
             e.printStackTrace();
         }
     }

@@ -1,10 +1,10 @@
 package com.crowdflower;
 
+import com.github.javafaker.Faker;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-
-import static java.lang.Thread.sleep;
 
 public class TestbedForThrift {
     public static final String RABBIT_MQ_URL = "amqp://guest:guest@localhost:5672";
@@ -19,9 +19,9 @@ public class TestbedForThrift {
         executorService.submit(mqConsumer);
         executorService.submit(mqConsumer2);
 
-        executorService.awaitTermination(5, TimeUnit.MINUTES);
+        executorService.awaitTermination(15, TimeUnit.SECONDS);
 
-        mqProducer.shutdown();
         mqConsumer.shutdown();
+        mqConsumer2.shutdown();
     }
 }

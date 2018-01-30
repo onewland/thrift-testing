@@ -3,7 +3,7 @@ package com.crowdflower;
 import com.rabbitmq.client.*;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
-import org.apache.thrift.transport.TMemoryBuffer;
+import org.apache.thrift.transport.TMemoryInputTransport;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -29,18 +29,17 @@ public class MQConsumer implements Runnable {
                 public void handleDelivery(String consumerTag, Envelope envelope,
                                            AMQP.BasicProperties properties, byte[] body)
                         throws IOException {
-                    TMemoryBuffer tMemoryBuffer = new TMemoryBuffer(1024);
-                    TBinaryProtocol tbp = new TBinaryProtocol(tMemoryBuffer);
+                    TMemoryInputTransport tMemoryInputTransport = new TMemoryInputTransport(body);
+                    TBinaryProtocol tbp = new TBinaryProtocol(tMemoryInputTransport);
 
                     IntAndString intAndString = new IntAndString();
                     try {
-                        tMemoryBuffer.write(body);
                         intAndString.read(tbp);
                     } catch (TException e) {
                         e.printStackTrace();
                     }
 
-                    System.out.println("received " + intAndString.toString());
+                    System.out.println(intAndString);
                 }
             });
         } catch (IOException e) {
