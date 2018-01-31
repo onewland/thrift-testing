@@ -6,16 +6,6 @@ var amqp = require('amqplib');
 
 amqp.connect("amqp://guest:guest@localhost:5672");
 
-function readBuf(msg) {
-    let y = new ttypes.IntAndString();
-    let readerTransport = new thrift.TFramedTransport(
-        new Buffer(msg)
-    );
-    let readerProto = new thrift.TBinaryProtocol(readerTransport);
-    y.read(readerProto);
-    return y;
-}
-
 async function generateMessages(messageCount)  {
     let conn = await amqp.connect('amqp://localhost');
     let ch = await conn.createChannel();
@@ -36,7 +26,6 @@ async function generateMessages(messageCount)  {
         writerProto.flush();
     }
 
-    console.log('got here');
     setTimeout(function() { conn.close(); process.exit(0) }, 500);
 }
 
