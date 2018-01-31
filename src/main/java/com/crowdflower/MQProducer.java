@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
 public class MQProducer implements Runnable {
@@ -47,12 +49,20 @@ public class MQProducer implements Runnable {
         try {
             System.out.println("Publishing on " + mq.getQueue());
 
-            for(int i = 0; i < 100; i++) {
-                IntAndString ias = new IntAndString(faker.name().fullName(), i);
+            for(int i = 0; i < 100000; i++) {
+                IntAndString ias = new IntAndString();
+                ias.setName(faker.name().fullName());
+                ias.setCount(i);
+                Map<String,String> m = new HashMap<>();
+                for(int j = 0; j < 3; j++) {
+                    m.put(faker.harryPotter().character(), faker.harryPotter().quote());
+                }
+                ias.setFlexMetaData(m);
                 tbp = new TBinaryProtocol(tMemoryBuffer);
                 ias.write(tbp);
                 channel.basicPublish("", mq.getQueue(), null, tMemoryBuffer.getBuf().array());
                 tMemoryBuffer.reset();
+                Thread.sleep(100);
             }
 
             shutdown();
@@ -61,6 +71,8 @@ public class MQProducer implements Runnable {
         } catch (TException e) {
             e.printStackTrace();
         } catch (TimeoutException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }

@@ -12,17 +12,23 @@ public class IntAndString implements org.apache.thrift.TBase<IntAndString, IntAn
 
   private static final org.apache.thrift.protocol.TField NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("name", org.apache.thrift.protocol.TType.STRING, (short)1);
   private static final org.apache.thrift.protocol.TField COUNT_FIELD_DESC = new org.apache.thrift.protocol.TField("count", org.apache.thrift.protocol.TType.I32, (short)2);
+  private static final org.apache.thrift.protocol.TField FLEX_META_DATA_FIELD_DESC = new org.apache.thrift.protocol.TField("flexMetaData", org.apache.thrift.protocol.TType.MAP, (short)5);
+  private static final org.apache.thrift.protocol.TField NUMBER_OF_ATOMS_FIELD_DESC = new org.apache.thrift.protocol.TField("numberOfAtoms", org.apache.thrift.protocol.TType.I64, (short)8);
 
   private static final org.apache.thrift.scheme.SchemeFactory STANDARD_SCHEME_FACTORY = new IntAndStringStandardSchemeFactory();
   private static final org.apache.thrift.scheme.SchemeFactory TUPLE_SCHEME_FACTORY = new IntAndStringTupleSchemeFactory();
 
   public java.lang.String name; // required
   public int count; // required
+  public java.util.Map<java.lang.String,java.lang.String> flexMetaData; // required
+  public long numberOfAtoms; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     NAME((short)1, "name"),
-    COUNT((short)2, "count");
+    COUNT((short)2, "count"),
+    FLEX_META_DATA((short)5, "flexMetaData"),
+    NUMBER_OF_ATOMS((short)8, "numberOfAtoms");
 
     private static final java.util.Map<java.lang.String, _Fields> byName = new java.util.HashMap<java.lang.String, _Fields>();
 
@@ -41,6 +47,10 @@ public class IntAndString implements org.apache.thrift.TBase<IntAndString, IntAn
           return NAME;
         case 2: // COUNT
           return COUNT;
+        case 5: // FLEX_META_DATA
+          return FLEX_META_DATA;
+        case 8: // NUMBER_OF_ATOMS
+          return NUMBER_OF_ATOMS;
         default:
           return null;
       }
@@ -82,6 +92,7 @@ public class IntAndString implements org.apache.thrift.TBase<IntAndString, IntAn
 
   // isset id assignments
   private static final int __COUNT_ISSET_ID = 0;
+  private static final int __NUMBEROFATOMS_ISSET_ID = 1;
   private byte __isset_bitfield = 0;
   public static final java.util.Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
@@ -90,6 +101,12 @@ public class IntAndString implements org.apache.thrift.TBase<IntAndString, IntAn
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.COUNT, new org.apache.thrift.meta_data.FieldMetaData("count", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
+    tmpMap.put(_Fields.FLEX_META_DATA, new org.apache.thrift.meta_data.FieldMetaData("flexMetaData", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.MapMetaData(org.apache.thrift.protocol.TType.MAP, 
+            new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING), 
+            new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
+    tmpMap.put(_Fields.NUMBER_OF_ATOMS, new org.apache.thrift.meta_data.FieldMetaData("numberOfAtoms", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
     metaDataMap = java.util.Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(IntAndString.class, metaDataMap);
   }
@@ -99,12 +116,17 @@ public class IntAndString implements org.apache.thrift.TBase<IntAndString, IntAn
 
   public IntAndString(
     java.lang.String name,
-    int count)
+    int count,
+    java.util.Map<java.lang.String,java.lang.String> flexMetaData,
+    long numberOfAtoms)
   {
     this();
     this.name = name;
     this.count = count;
     setCountIsSet(true);
+    this.flexMetaData = flexMetaData;
+    this.numberOfAtoms = numberOfAtoms;
+    setNumberOfAtomsIsSet(true);
   }
 
   /**
@@ -116,6 +138,11 @@ public class IntAndString implements org.apache.thrift.TBase<IntAndString, IntAn
       this.name = other.name;
     }
     this.count = other.count;
+    if (other.isSetFlexMetaData()) {
+      java.util.Map<java.lang.String,java.lang.String> __this__flexMetaData = new java.util.HashMap<java.lang.String,java.lang.String>(other.flexMetaData);
+      this.flexMetaData = __this__flexMetaData;
+    }
+    this.numberOfAtoms = other.numberOfAtoms;
   }
 
   public IntAndString deepCopy() {
@@ -127,6 +154,9 @@ public class IntAndString implements org.apache.thrift.TBase<IntAndString, IntAn
     this.name = null;
     setCountIsSet(false);
     this.count = 0;
+    this.flexMetaData = null;
+    setNumberOfAtomsIsSet(false);
+    this.numberOfAtoms = 0;
   }
 
   public java.lang.String getName() {
@@ -176,6 +206,64 @@ public class IntAndString implements org.apache.thrift.TBase<IntAndString, IntAn
     __isset_bitfield = org.apache.thrift.EncodingUtils.setBit(__isset_bitfield, __COUNT_ISSET_ID, value);
   }
 
+  public int getFlexMetaDataSize() {
+    return (this.flexMetaData == null) ? 0 : this.flexMetaData.size();
+  }
+
+  public void putToFlexMetaData(java.lang.String key, java.lang.String val) {
+    if (this.flexMetaData == null) {
+      this.flexMetaData = new java.util.HashMap<java.lang.String,java.lang.String>();
+    }
+    this.flexMetaData.put(key, val);
+  }
+
+  public java.util.Map<java.lang.String,java.lang.String> getFlexMetaData() {
+    return this.flexMetaData;
+  }
+
+  public IntAndString setFlexMetaData(java.util.Map<java.lang.String,java.lang.String> flexMetaData) {
+    this.flexMetaData = flexMetaData;
+    return this;
+  }
+
+  public void unsetFlexMetaData() {
+    this.flexMetaData = null;
+  }
+
+  /** Returns true if field flexMetaData is set (has been assigned a value) and false otherwise */
+  public boolean isSetFlexMetaData() {
+    return this.flexMetaData != null;
+  }
+
+  public void setFlexMetaDataIsSet(boolean value) {
+    if (!value) {
+      this.flexMetaData = null;
+    }
+  }
+
+  public long getNumberOfAtoms() {
+    return this.numberOfAtoms;
+  }
+
+  public IntAndString setNumberOfAtoms(long numberOfAtoms) {
+    this.numberOfAtoms = numberOfAtoms;
+    setNumberOfAtomsIsSet(true);
+    return this;
+  }
+
+  public void unsetNumberOfAtoms() {
+    __isset_bitfield = org.apache.thrift.EncodingUtils.clearBit(__isset_bitfield, __NUMBEROFATOMS_ISSET_ID);
+  }
+
+  /** Returns true if field numberOfAtoms is set (has been assigned a value) and false otherwise */
+  public boolean isSetNumberOfAtoms() {
+    return org.apache.thrift.EncodingUtils.testBit(__isset_bitfield, __NUMBEROFATOMS_ISSET_ID);
+  }
+
+  public void setNumberOfAtomsIsSet(boolean value) {
+    __isset_bitfield = org.apache.thrift.EncodingUtils.setBit(__isset_bitfield, __NUMBEROFATOMS_ISSET_ID, value);
+  }
+
   public void setFieldValue(_Fields field, java.lang.Object value) {
     switch (field) {
     case NAME:
@@ -194,6 +282,22 @@ public class IntAndString implements org.apache.thrift.TBase<IntAndString, IntAn
       }
       break;
 
+    case FLEX_META_DATA:
+      if (value == null) {
+        unsetFlexMetaData();
+      } else {
+        setFlexMetaData((java.util.Map<java.lang.String,java.lang.String>)value);
+      }
+      break;
+
+    case NUMBER_OF_ATOMS:
+      if (value == null) {
+        unsetNumberOfAtoms();
+      } else {
+        setNumberOfAtoms((java.lang.Long)value);
+      }
+      break;
+
     }
   }
 
@@ -204,6 +308,12 @@ public class IntAndString implements org.apache.thrift.TBase<IntAndString, IntAn
 
     case COUNT:
       return getCount();
+
+    case FLEX_META_DATA:
+      return getFlexMetaData();
+
+    case NUMBER_OF_ATOMS:
+      return getNumberOfAtoms();
 
     }
     throw new java.lang.IllegalStateException();
@@ -220,6 +330,10 @@ public class IntAndString implements org.apache.thrift.TBase<IntAndString, IntAn
       return isSetName();
     case COUNT:
       return isSetCount();
+    case FLEX_META_DATA:
+      return isSetFlexMetaData();
+    case NUMBER_OF_ATOMS:
+      return isSetNumberOfAtoms();
     }
     throw new java.lang.IllegalStateException();
   }
@@ -257,6 +371,24 @@ public class IntAndString implements org.apache.thrift.TBase<IntAndString, IntAn
         return false;
     }
 
+    boolean this_present_flexMetaData = true && this.isSetFlexMetaData();
+    boolean that_present_flexMetaData = true && that.isSetFlexMetaData();
+    if (this_present_flexMetaData || that_present_flexMetaData) {
+      if (!(this_present_flexMetaData && that_present_flexMetaData))
+        return false;
+      if (!this.flexMetaData.equals(that.flexMetaData))
+        return false;
+    }
+
+    boolean this_present_numberOfAtoms = true;
+    boolean that_present_numberOfAtoms = true;
+    if (this_present_numberOfAtoms || that_present_numberOfAtoms) {
+      if (!(this_present_numberOfAtoms && that_present_numberOfAtoms))
+        return false;
+      if (this.numberOfAtoms != that.numberOfAtoms)
+        return false;
+    }
+
     return true;
   }
 
@@ -269,6 +401,12 @@ public class IntAndString implements org.apache.thrift.TBase<IntAndString, IntAn
       hashCode = hashCode * 8191 + name.hashCode();
 
     hashCode = hashCode * 8191 + count;
+
+    hashCode = hashCode * 8191 + ((isSetFlexMetaData()) ? 131071 : 524287);
+    if (isSetFlexMetaData())
+      hashCode = hashCode * 8191 + flexMetaData.hashCode();
+
+    hashCode = hashCode * 8191 + org.apache.thrift.TBaseHelper.hashCode(numberOfAtoms);
 
     return hashCode;
   }
@@ -297,6 +435,26 @@ public class IntAndString implements org.apache.thrift.TBase<IntAndString, IntAn
     }
     if (isSetCount()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.count, other.count);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = java.lang.Boolean.valueOf(isSetFlexMetaData()).compareTo(other.isSetFlexMetaData());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetFlexMetaData()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.flexMetaData, other.flexMetaData);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = java.lang.Boolean.valueOf(isSetNumberOfAtoms()).compareTo(other.isSetNumberOfAtoms());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetNumberOfAtoms()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.numberOfAtoms, other.numberOfAtoms);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -331,6 +489,18 @@ public class IntAndString implements org.apache.thrift.TBase<IntAndString, IntAn
     if (!first) sb.append(", ");
     sb.append("count:");
     sb.append(this.count);
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("flexMetaData:");
+    if (this.flexMetaData == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.flexMetaData);
+    }
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("numberOfAtoms:");
+    sb.append(this.numberOfAtoms);
     first = false;
     sb.append(")");
     return sb.toString();
@@ -396,6 +566,34 @@ public class IntAndString implements org.apache.thrift.TBase<IntAndString, IntAn
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
+          case 5: // FLEX_META_DATA
+            if (schemeField.type == org.apache.thrift.protocol.TType.MAP) {
+              {
+                org.apache.thrift.protocol.TMap _map0 = iprot.readMapBegin();
+                struct.flexMetaData = new java.util.HashMap<java.lang.String,java.lang.String>(2*_map0.size);
+                java.lang.String _key1;
+                java.lang.String _val2;
+                for (int _i3 = 0; _i3 < _map0.size; ++_i3)
+                {
+                  _key1 = iprot.readString();
+                  _val2 = iprot.readString();
+                  struct.flexMetaData.put(_key1, _val2);
+                }
+                iprot.readMapEnd();
+              }
+              struct.setFlexMetaDataIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 8: // NUMBER_OF_ATOMS
+            if (schemeField.type == org.apache.thrift.protocol.TType.I64) {
+              struct.numberOfAtoms = iprot.readI64();
+              struct.setNumberOfAtomsIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
         }
@@ -419,6 +617,22 @@ public class IntAndString implements org.apache.thrift.TBase<IntAndString, IntAn
       oprot.writeFieldBegin(COUNT_FIELD_DESC);
       oprot.writeI32(struct.count);
       oprot.writeFieldEnd();
+      if (struct.flexMetaData != null) {
+        oprot.writeFieldBegin(FLEX_META_DATA_FIELD_DESC);
+        {
+          oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.STRING, org.apache.thrift.protocol.TType.STRING, struct.flexMetaData.size()));
+          for (java.util.Map.Entry<java.lang.String, java.lang.String> _iter4 : struct.flexMetaData.entrySet())
+          {
+            oprot.writeString(_iter4.getKey());
+            oprot.writeString(_iter4.getValue());
+          }
+          oprot.writeMapEnd();
+        }
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldBegin(NUMBER_OF_ATOMS_FIELD_DESC);
+      oprot.writeI64(struct.numberOfAtoms);
+      oprot.writeFieldEnd();
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
@@ -441,9 +655,28 @@ public class IntAndString implements org.apache.thrift.TBase<IntAndString, IntAn
       if (struct.isSetCount()) {
         optionals.set(0);
       }
-      oprot.writeBitSet(optionals, 1);
+      if (struct.isSetFlexMetaData()) {
+        optionals.set(1);
+      }
+      if (struct.isSetNumberOfAtoms()) {
+        optionals.set(2);
+      }
+      oprot.writeBitSet(optionals, 3);
       if (struct.isSetCount()) {
         oprot.writeI32(struct.count);
+      }
+      if (struct.isSetFlexMetaData()) {
+        {
+          oprot.writeI32(struct.flexMetaData.size());
+          for (java.util.Map.Entry<java.lang.String, java.lang.String> _iter5 : struct.flexMetaData.entrySet())
+          {
+            oprot.writeString(_iter5.getKey());
+            oprot.writeString(_iter5.getValue());
+          }
+        }
+      }
+      if (struct.isSetNumberOfAtoms()) {
+        oprot.writeI64(struct.numberOfAtoms);
       }
     }
 
@@ -452,10 +685,29 @@ public class IntAndString implements org.apache.thrift.TBase<IntAndString, IntAn
       org.apache.thrift.protocol.TTupleProtocol iprot = (org.apache.thrift.protocol.TTupleProtocol) prot;
       struct.name = iprot.readString();
       struct.setNameIsSet(true);
-      java.util.BitSet incoming = iprot.readBitSet(1);
+      java.util.BitSet incoming = iprot.readBitSet(3);
       if (incoming.get(0)) {
         struct.count = iprot.readI32();
         struct.setCountIsSet(true);
+      }
+      if (incoming.get(1)) {
+        {
+          org.apache.thrift.protocol.TMap _map6 = new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.STRING, org.apache.thrift.protocol.TType.STRING, iprot.readI32());
+          struct.flexMetaData = new java.util.HashMap<java.lang.String,java.lang.String>(2*_map6.size);
+          java.lang.String _key7;
+          java.lang.String _val8;
+          for (int _i9 = 0; _i9 < _map6.size; ++_i9)
+          {
+            _key7 = iprot.readString();
+            _val8 = iprot.readString();
+            struct.flexMetaData.put(_key7, _val8);
+          }
+        }
+        struct.setFlexMetaDataIsSet(true);
+      }
+      if (incoming.get(2)) {
+        struct.numberOfAtoms = iprot.readI64();
+        struct.setNumberOfAtomsIsSet(true);
       }
     }
   }

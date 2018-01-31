@@ -14,5 +14,5 @@ $deserializer = Thrift::Deserializer.new
 $queue.subscribe(block: true) do |delivery_info, properties, payload|
   obj = IntAndString.new
   $deserializer.deserialize(obj, payload)
-  puts "#{obj.name}, #{obj.count}"
+  puts "#{obj.inspect}"
 end

@@ -10,10 +10,14 @@ class IntAndString
   include ::Thrift::Struct, ::Thrift::Struct_Union
   NAME = 1
   COUNT = 2
+  FLEXMETADATA = 5
+  NUMBEROFATOMS = 8
 
   FIELDS = {
     NAME => {:type => ::Thrift::Types::STRING, :name => 'name'},
-    COUNT => {:type => ::Thrift::Types::I32, :name => 'count'}
+    COUNT => {:type => ::Thrift::Types::I32, :name => 'count'},
+    FLEXMETADATA => {:type => ::Thrift::Types::MAP, :name => 'flexMetaData', :key => {:type => ::Thrift::Types::STRING}, :value => {:type => ::Thrift::Types::STRING}},
+    NUMBEROFATOMS => {:type => ::Thrift::Types::I64, :name => 'numberOfAtoms'}
   }
 
   def struct_fields; FIELDS; end

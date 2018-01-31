@@ -1,7 +1,5 @@
 package com.crowdflower;
 
-import com.github.javafaker.Faker;
-
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -16,10 +14,10 @@ public class TestbedForThrift {
         MQConsumer mqConsumer2 = new MQConsumer(RABBIT_MQ_URL, mqProducer.getQueue());
 
         executorService.submit(mqProducer);
-        executorService.submit(mqConsumer);
-        executorService.submit(mqConsumer2);
+//        executorService.submit(mqConsumer);
+//        executorService.submit(mqConsumer2);
 
-        executorService.awaitTermination(15, TimeUnit.SECONDS);
+        executorService.awaitTermination(15, TimeUnit.MINUTES);
 
         mqConsumer.shutdown();
         mqConsumer2.shutdown();

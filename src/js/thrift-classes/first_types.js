@@ -14,6 +14,8 @@ var ttypes = module.exports = {};
 var IntAndString = module.exports.IntAndString = function(args) {
   this.name = null;
   this.count = null;
+  this.flexMetaData = null;
+  this.numberOfAtoms = null;
   if (args) {
     if (args.name !== undefined && args.name !== null) {
       this.name = args.name;
@@ -22,6 +24,12 @@ var IntAndString = module.exports.IntAndString = function(args) {
     }
     if (args.count !== undefined && args.count !== null) {
       this.count = args.count;
+    }
+    if (args.flexMetaData !== undefined && args.flexMetaData !== null) {
+      this.flexMetaData = Thrift.copyMap(args.flexMetaData, [null]);
+    }
+    if (args.numberOfAtoms !== undefined && args.numberOfAtoms !== null) {
+      this.numberOfAtoms = args.numberOfAtoms;
     }
   }
 };
@@ -53,6 +61,37 @@ IntAndString.prototype.read = function(input) {
         input.skip(ftype);
       }
       break;
+      case 5:
+      if (ftype == Thrift.Type.MAP) {
+        var _size0 = 0;
+        var _rtmp34;
+        this.flexMetaData = {};
+        var _ktype1 = 0;
+        var _vtype2 = 0;
+        _rtmp34 = input.readMapBegin();
+        _ktype1 = _rtmp34.ktype;
+        _vtype2 = _rtmp34.vtype;
+        _size0 = _rtmp34.size;
+        for (var _i5 = 0; _i5 < _size0; ++_i5)
+        {
+          var key6 = null;
+          var val7 = null;
+          key6 = input.readString();
+          val7 = input.readString();
+          this.flexMetaData[key6] = val7;
+        }
+        input.readMapEnd();
+      } else {
+        input.skip(ftype);
+      }
+      break;
+      case 8:
+      if (ftype == Thrift.Type.I64) {
+        this.numberOfAtoms = input.readI64();
+      } else {
+        input.skip(ftype);
+      }
+      break;
       default:
         input.skip(ftype);
     }
@@ -72,6 +111,26 @@ IntAndString.prototype.write = function(output) {
   if (this.count !== null && this.count !== undefined) {
     output.writeFieldBegin('count', Thrift.Type.I32, 2);
     output.writeI32(this.count);
+    output.writeFieldEnd();
+  }
+  if (this.flexMetaData !== null && this.flexMetaData !== undefined) {
+    output.writeFieldBegin('flexMetaData', Thrift.Type.MAP, 5);
+    output.writeMapBegin(Thrift.Type.STRING, Thrift.Type.STRING, Thrift.objectLength(this.flexMetaData));
+    for (var kiter8 in this.flexMetaData)
+    {
+      if (this.flexMetaData.hasOwnProperty(kiter8))
+      {
+        var viter9 = this.flexMetaData[kiter8];
+        output.writeString(kiter8);
+        output.writeString(viter9);
+      }
+    }
+    output.writeMapEnd();
+    output.writeFieldEnd();
+  }
+  if (this.numberOfAtoms !== null && this.numberOfAtoms !== undefined) {
+    output.writeFieldBegin('numberOfAtoms', Thrift.Type.I64, 8);
+    output.writeI64(this.numberOfAtoms);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
