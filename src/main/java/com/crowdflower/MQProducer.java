@@ -15,6 +15,7 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.TimeoutException;
 
 public class MQProducer implements Runnable {
@@ -47,10 +48,15 @@ public class MQProducer implements Runnable {
     @Override
     public void run() {
         try {
+            Random r = new Random();
             System.out.println("Publishing on " + mq.getQueue());
 
             for(int i = 0; i < 100000; i++) {
                 IntAndString ias = new IntAndString();
+                SubStruct ss = new SubStruct();
+                ss.addToNumbers(i);
+                ss.addToNumbers(i*2);
+                ss.addToNumbers(i/2);
                 ias.setName(faker.name().fullName());
                 ias.setCount(i);
                 Map<String,String> m = new HashMap<>();
@@ -58,11 +64,14 @@ public class MQProducer implements Runnable {
                     m.put(faker.harryPotter().character(), faker.harryPotter().quote());
                 }
                 ias.setFlexMetaData(m);
+                ias.setNumberOfAtoms(Math.abs(r.nextLong()));
+                ias.setHello(ss);
+
                 tbp = new TBinaryProtocol(tMemoryBuffer);
                 ias.write(tbp);
                 channel.basicPublish("", mq.getQueue(), null, tMemoryBuffer.getBuf().array());
                 tMemoryBuffer.reset();
-                Thread.sleep(100);
+                Thread.sleep(250);
             }
 
             shutdown();
